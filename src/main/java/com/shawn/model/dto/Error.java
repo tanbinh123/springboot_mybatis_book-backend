@@ -23,4 +23,19 @@ public class Error implements Serializable {
     private int code; // Error code
     private String message; // Error message
 
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

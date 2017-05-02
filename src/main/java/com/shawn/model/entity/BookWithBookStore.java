@@ -20,4 +20,15 @@ public class BookWithBookStore extends Book {
 
     private BookStore bookStore;
 
+    public BookWithBookStore(Long id) {
+        super(id);
+    }
+
+    public BookStore getBookStore() {
+        return bookStore;
+    }
+
+    public void setBookStore(BookStore bookStore) {
+        this.bookStore = bookStore;
+    }
 }

@@ -22,6 +22,29 @@ public class PaginatedResult implements Serializable {
 
     private int currentPage; // Current page number
     private int totalPage; // Number of total pages
-    private Object data; // Paginated resources
+    private Object data; // Paginated resources//分页
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 }

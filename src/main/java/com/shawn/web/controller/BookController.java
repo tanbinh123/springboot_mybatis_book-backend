@@ -1,5 +1,6 @@
 package com.shawn.web.controller;
 
+
 import com.shawn.constant.PageConstant;
 import com.shawn.constant.ResourceNameConstant;
 import com.shawn.model.dto.PaginatedResult;
@@ -30,30 +31,31 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getBooks(@RequestParam(value = "page", required = false) String pageString,
+    public ResponseEntity<?> getBooks(@RequestParam(value = "page", required = false) String pageString,//当前页
                                       @RequestParam(value = "per_page", required = false) String perPageString) {
         // Parse request parameters
         int page = PageUtil.parsePage(pageString, PageConstant.PAGE);
         int perPage = PageUtil.parsePerPage(perPageString, PageConstant.PER_PAGE);
-
+        PaginatedResult f = new PaginatedResult();
+        f.setData(bookService.getBooksByPage(page, perPage));//数据
+        f.setCurrentPage(page);//当前页
+        f.setTotalPage(bookService.getTotalPage(perPage));//总页数
         return ResponseEntity
-                .ok(new PaginatedResult()
-                        .setData(bookService.getBooksByPage(page, perPage))
-                        .setCurrentPage(page)
-                        .setTotalPage(bookService.getTotalPage(perPage)));
+                .ok(f);
     }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<?> getBookById(@PathVariable Long bookId) {
+        ResourceNotFoundException f = new ResourceNotFoundException();
+        f.setResourceName(ResourceNameConstant.BOOK);
+        f.setId(bookId);
         return bookService
                 .getBookById(bookId)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException()
-                        .setResourceName(ResourceNameConstant.BOOK)
-                        .setId(bookId));
+                .orElseThrow(() -> f);
     }
 
-    @PostMapping
+    @PostMapping("/saveBook")
     public ResponseEntity<?> postBook(@RequestBody Book book) {
         bookService.saveBook(book);
 
@@ -93,11 +95,12 @@ public class BookController {
 
     /********************************** HELPER METHOD **********************************/
     private void assertBookExist(Long bookId) {
+        ResourceNotFoundException rf = new ResourceNotFoundException();
+        rf.setResourceName(ResourceNameConstant.BOOK);
+        rf.setId(bookId);
         bookService
                 .getBookById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException()
-                        .setResourceName(ResourceNameConstant.BOOK)
-                        .setId(bookId));
+                .orElseThrow(() -> rf);
     }
 
 }
